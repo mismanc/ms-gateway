@@ -3,3 +3,6 @@ spring:
     name: ms-gateway
 server:
   port: 9090
+logging:
+  level:
+    com.ms: debug
