@@ -7,18 +7,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("!local-discovery")
-public class LocalHostRouteConfig {
+@Profile("local-discovery")
+public class LoadBalancedRoutes {
 
     @Bean
-    public RouteLocator localeHostRoutes(RouteLocatorBuilder builder){
+    public RouteLocator loadBalancerRoutes(RouteLocatorBuilder builder){
         return builder.routes()
                 .route(r -> r.path("/api/v1/soda*","/api/v1/soda/*", "/api/v1/soda/upc/*")
-                        .uri("http://localhost:8080"))
+                        .uri("lb://soda-service"))
                 .route(r -> r.path("/api/v1/customers/**")
-                        .uri("http://localhost:8081"))
+                        .uri("lb://order-service"))
                 .route(r -> r.path("/api/v1/soda/*/inventory")
-                        .uri("http://localhost:8082"))
+                        .uri("lb://inventory-service"))
                 .build();
     }
 
